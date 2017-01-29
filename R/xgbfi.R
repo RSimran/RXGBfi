@@ -82,24 +82,25 @@ xgb.fi <- function(model, xgbfi.loc = "C:/xgbfi", features = NULL, max.interacti
   }
   
   require(shiny)
+  library(dplyr, quietly = T)
+  library(openxlsx, quietly = T)
+  library(DT, quietly = T)
+  library(data.table, quietly = T)
   
   shinyApp(ui = fluidPage( navbarPage("XGBoost",
                                       tabPanel("XGBoost Feature Interaction",
                                                fluidPage(
                                                  tabsetPanel(
                                                    tabPanel("Feature Interaction", value = 1, h4("Feature Interaction"),
-                                                            p("The feature interactions present in the model."), dataTableOutput("tableVars1")),
+                                                            p("The feature interactions present in the model."), DT::dataTableOutput("tableVars1")),
                                                    tabPanel("2 Variable Feature Interaction", value = 2, h4("Feature Interaction"),
-                                                            p("The feature interactions present in the model."), dataTableOutput("tableVars2")),
+                                                            p("The feature interactions present in the model."), DT::dataTableOutput("tableVars2")),
                                                    tabPanel("3 Variable Feature Interaction", value = 2, h4("Feature Interaction"),
-                                                            p("The feature interactions present in the model."), dataTableOutput("tableVars3")),
+                                                            p("The feature interactions present in the model."), DT::dataTableOutput("tableVars3")),
                                                    id = "conditionedPanels"))))),                                              
 server = function(input, output) {
   
-  library(dplyr, quietly = T)
-  library(openxlsx, quietly = T)
-  library(DT, quietly = T)
-  library(data.table, quietly = T)
+
   
   tableVars1 <- function(){
     featuresimp <- openxlsx::read.xlsx(paste0(xgbfi.loc, "/", "XgbFeatureInteractions.xlsx"))
@@ -132,7 +133,7 @@ server = function(input, output) {
   
   
   
-  output$tableVars1 <- renderDataTable(
+  output$tableVars1 <- DT::renderDataTable(
     datatable(tableVars1(),
               filter = 'top',
               class = 'hover stripe',
@@ -151,7 +152,7 @@ server = function(input, output) {
   )
   
   
-  output$tableVars2 <- renderDataTable(
+  output$tableVars2 <- DT::renderDataTable(
     datatable(tableVars2(),
               filter = 'top',
               class = 'hover stripe',
@@ -169,7 +170,7 @@ server = function(input, output) {
   )
   
   
-  output$tableVars3 <- renderDataTable(
+  output$tableVars3 <-DT::renderDataTable(
     datatable(tableVars3(),
               filter = 'top',
               class = 'hover stripe',
