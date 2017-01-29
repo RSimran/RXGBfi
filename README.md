@@ -1,4 +1,6 @@
 # RXGBfi
+This package provides a rough interface to XGBfi executable with R. It does this using the xgb.fi R function.
+It calls the XGBfi executable with your data and presents the feature interaction in a Shiny Dashboard.
 
 # Installation
 Inorder to install this package the devtools R package is required. Once the devtools package is installed, RXGBfi can be installed using the following commands.
