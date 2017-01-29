@@ -7,6 +7,13 @@ Inorder to install this package the devtools R package is required. Once the dev
 library(devtools)
 devtools::install_github("RSimran/RXGBfi")
 ```
-The installation will install the following libraries:
-* test
-* test
+The installation will install the following libraries if they are not installed:
+* data.table
+* dplyr
+* DT
+* shiny 
+* xgboost
+* openxlsx
+
+
+
