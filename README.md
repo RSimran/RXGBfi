@@ -15,6 +15,6 @@ The installation will install the following libraries if they are not installed:
 * xgboost
 * openxlsx
 
-During the initial function call, RXGBfi will check to see if XGBfi exists in the C:/xgbfi folder. If it does not, then the user will be prompted to download and install the it. If yes is chosen, then RXGBfi will download XGBfi from https://github.com/Far0n/xgbfi repository and install it in the C:/xgbfi folder. Then it will create two folders within the bin folder named EPPlus and NGenerics. These folders are required inorder for RXGBfi to run properly and should be created automatically.
+During the initial function call, RXGBfi will check to see if XGBfi exists in the C:/xgbfi folder. If it does not, then the user will be prompted to download and install the XGBfi. If yes is chosen, then RXGBfi will download XGBfi from https://github.com/Far0n/xgbfi repository and install it in the C:/xgbfi folder. Then it will create two folders within the bin folder named EPPlus and NGenerics. These folders are required inorder for RXGBfi to run properly and should be created automatically.
 
 
