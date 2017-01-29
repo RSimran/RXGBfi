@@ -4,6 +4,7 @@
 #' @param model type: XGBModel 
 #' @param xgbfi.loc type: filepath File path for the XGBfi folder. Default is C:/xgbfi
 #' @param max.interaction.depth type: integer Upper bound for extracted feature interactions depth 
+#' @param features type: Character Vector A character vector of the features in the model.
 #' @param max.deepening  type: integer Upper bound for interaction start deepening (zero deepening => interactions starting @root only)
 #' @param max.trees type: integer Upper bound for trees to be parsed 
 #' @param top.k type: integer Upper bound for exportet feature interactions per depth level 
