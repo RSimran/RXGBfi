@@ -26,7 +26,7 @@
 #'
 xgb.fi <- function(model, xgbfi.loc = "C:/xgbfi", features = NULL, max.interaction.depth = 2, 
                    max.deepening = -1, max.trees = -1, top.k = 100, max.histograms = 10) {
-  
+  library(xgboost)
   xgbfi_exe <- paste0(xgbfi.loc, "/", "bin", "/", "XgbFeatureInteractions.exe")
   
   featureVector <- c()
@@ -96,10 +96,10 @@ xgb.fi <- function(model, xgbfi.loc = "C:/xgbfi", features = NULL, max.interacti
                                                    id = "conditionedPanels"))))),                                              
 server = function(input, output) {
   
-  library(dplyr)
-  library(openxlsx)
-  library(DT)
-  library(data.table)
+  library(dplyr, quietly = T)
+  library(openxlsx, quietly = T)
+  library(DT, quietly = T)
+  library(data.table, quietly = T)
   
   tableVars1 <- function(){
     featuresimp <- openxlsx::read.xlsx(paste0(xgbfi.loc, "/", "XgbFeatureInteractions.xlsx"))
