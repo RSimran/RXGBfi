@@ -19,4 +19,17 @@ The installation will install the following libraries if they are not installed:
 
 During the initial function call, RXGBfi will check to see if XGBfi exists in the C:/xgbfi folder. If it does not, then the user will be prompted to download and install the XGBfi. If yes is chosen, then RXGBfi will download XGBfi from https://github.com/Far0n/xgbfi repository and install it in the C:/xgbfi folder. Then it will create two folders within the bin folder named EPPlus and NGenerics. These folders are required inorder for RXGBfi to run properly and should be created automatically.
 
+# Demo
+```r
+library(xgboost)
+library(Ecdat)
+data(Icecream)
+train.data <- data.matrix(Icecream[,-1])
 
+bst <- xgboost(data = train.data, label = Icecream$cons, max.depth = 3, eta = 1, nthread = 2, nround = 2, objective = "reg:linear")
+
+
+features <- names(Icecream[,-1])
+
+xgb.fi(model = bst, features = features)
+```
