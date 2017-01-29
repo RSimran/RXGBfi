@@ -1,4 +1,4 @@
-Package: XGBfiR
+Package: RXGBfi
 Title: XGBoost Interaction Graphing Function
 Version: 0.0.0.9000
 Authors@R: person("Simran", "Singh", email = "first.last@example.com", role = c("aut", "cre"))
