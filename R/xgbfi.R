@@ -142,7 +142,7 @@ server = function(input, output) {
                       backgroundSize = '100% 90%',
                       backgroundRepeat = 'no-repeat',
                       backgroundPosition = 'center') %>%
-      formatPercentage(columns = c('Gain', 'wFScore', 'Average.wFScore', 'Average.Gain', 'Expected.Gain'),
+      formatPercentage(columns = c('Gain', 'wFScore', 'Average.wFScore', 'Average.Gain', 'Expected.Gain', 'Gain.Percentage'),
                        digits = 4)
     
     
@@ -161,7 +161,7 @@ server = function(input, output) {
                       backgroundSize = '100% 90%',
                       backgroundRepeat = 'no-repeat',
                       backgroundPosition = 'center') %>%
-      formatPercentage(columns = c('Gain', 'wFScore', 'Average.wFScore', 'Average.Gain', 'Expected.Gain'),
+      formatPercentage(columns = c('Gain', 'wFScore', 'Average.wFScore', 'Average.Gain', 'Expected.Gain', 'Gain.Percentage'),
                        digits = 4)
     
     
@@ -179,7 +179,7 @@ server = function(input, output) {
                       backgroundSize = '100% 90%',
                       backgroundRepeat = 'no-repeat',
                       backgroundPosition = 'center') %>%
-      formatPercentage(columns = c('Gain', 'wFScore', 'Average.wFScore', 'Average.Gain', 'Expected.Gain'),
+      formatPercentage(columns = c('Gain', 'wFScore', 'Average.wFScore', 'Average.Gain', 'Expected.Gain', 'Gain.Percentage'),
                        digits = 4)
     
     
