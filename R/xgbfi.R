@@ -69,7 +69,7 @@ xgb.fi <- function(model, xgbfi.loc = "C:/xgbfi", features = NULL, max.interacti
                     ' -h ', max.histograms,
                     ' -o ', paste0(xgbfi.loc, "/", "XgbFeatureInteractions"))
   
-  out <- system(command, intern = FALSE)
+  out <- system(command, intern =TRUE)
   
   if (!dir.exists(file.path(xgbfi.loc, "bin", "EPPlus"))) {
     dir.create(file.path(xgbfi.loc, "bin", "EPPlus"))
@@ -144,7 +144,7 @@ server = function(input, output) {
                       backgroundSize = '100% 90%',
                       backgroundRepeat = 'no-repeat',
                       backgroundPosition = 'center') %>%
-      formatPercentage(columns = c('Gain', 'wFScore', 'Average.wFScore', 'Average.Gain', 'Expected.Gain', 'Gain.Percentage'),
+      formatPercentage(columns = c('wFScore', 'Average.wFScore', 'Average.Gain', 'Expected.Gain', 'Gain.Percentage'),
                        digits = 4)
     
     
@@ -163,7 +163,7 @@ server = function(input, output) {
                       backgroundSize = '100% 90%',
                       backgroundRepeat = 'no-repeat',
                       backgroundPosition = 'center') %>%
-      formatPercentage(columns = c('Gain', 'wFScore', 'Average.wFScore', 'Average.Gain', 'Expected.Gain', 'Gain.Percentage'),
+      formatPercentage(columns = c('wFScore', 'Average.wFScore', 'Average.Gain', 'Expected.Gain', 'Gain.Percentage'),
                        digits = 4)
     
     
@@ -181,7 +181,7 @@ server = function(input, output) {
                       backgroundSize = '100% 90%',
                       backgroundRepeat = 'no-repeat',
                       backgroundPosition = 'center') %>%
-      formatPercentage(columns = c('Gain', 'wFScore', 'Average.wFScore', 'Average.Gain', 'Expected.Gain', 'Gain.Percentage'),
+      formatPercentage(columns = c('wFScore', 'Average.wFScore', 'Average.Gain', 'Expected.Gain', 'Gain.Percentage'),
                        digits = 4)
     
     
