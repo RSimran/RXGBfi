@@ -51,9 +51,9 @@ xgb.fi <- function(model, xgbfi.loc = "C:/xgbfi", features = NULL, max.interacti
       download.file("https://github.com/Far0n/xgbfi/archive/master.zip", temp, mode="wb")
       unzip(temp, exdir = dirname(xgbfi.loc))
       file.rename(from = file.path(dirname(xgbfi.loc), 'xgbfi-master'), to = file.path(dirname(xgbfi.loc), "xgbfi"))
-      }
+    }
   } 
-      
+  
   
   
   write.table(featureVector, paste0(xgbfi.loc, "/", "fmap.txt"), row.names = FALSE, quote = FALSE, col.names = FALSE)
@@ -81,12 +81,12 @@ xgb.fi <- function(model, xgbfi.loc = "C:/xgbfi", features = NULL, max.interacti
     file.copy(file.path(xgbfi.loc, "bin", "lib", "NGenerics.dll"), file.path(xgbfi.loc, "bin", "NGenerics"))
   }
   
-  require(shiny)
+  require(shiny, quietly = T)
   library(dplyr, quietly = T)
+  library(data.table, quietly = T)
   library(openxlsx, quietly = T)
   library(DT, quietly = T)
-  library(data.table, quietly = T)
-  
+
   shinyApp(ui = fluidPage( navbarPage("XGBoost",
                                       tabPanel("XGBoost Feature Interaction",
                                                fluidPage(
@@ -94,108 +94,108 @@ xgb.fi <- function(model, xgbfi.loc = "C:/xgbfi", features = NULL, max.interacti
                                                    tabPanel("Feature Interaction", value = 1, h4("Feature Interaction"),
                                                             p("The feature interactions present in the model."), DT::dataTableOutput("tableVars1")),
                                                    tabPanel("2 Variable Feature Interaction", value = 2, h4("Feature Interaction"),
-                                                            p("The feature interactions present in the model."), DT::dataTableOutput("tableVars2")),
+                                                            p("The 2 variables feature interactions present in the model."), DT::dataTableOutput("tableVars2")),
                                                    tabPanel("3 Variable Feature Interaction", value = 2, h4("Feature Interaction"),
-                                                            p("The feature interactions present in the model."), DT::dataTableOutput("tableVars3")),
+                                                            p("The 3 variables feature interactions present in the model."), DT::dataTableOutput("tableVars3")),
                                                    id = "conditionedPanels"))))),                                              
-server = function(input, output) {
-  
-
-  
-  tableVars1 <- function(){
-    featuresimp <- openxlsx::read.xlsx(paste0(xgbfi.loc, "/", "XgbFeatureInteractions.xlsx"))
-    featuresimp <- as.data.table(featuresimp)
-    featuresimp[, Gain.Percentage := Gain/sum(Gain)]
-    cols <- c('wFScore', 'Average.wFScore', 'Average.Gain', 'Expected.Gain', 'Gain.Percentage')
-    featuresimp[,(cols) := round(.SD,4), .SDcols=cols]
-    setcolorder(featuresimp, c("Interaction", "Gain.Percentage", colnames(featuresimp)[!colnames(featuresimp) %in% c("Interaction", "Gain.Percentage")]))
-    
-  }
-  
-  
-  tableVars2 <- function(){
-    featuresimp <- openxlsx::read.xlsx(paste0(xgbfi.loc, "/", "XgbFeatureInteractions.xlsx"), sheet = 2)
-    featuresimp <- as.data.table(featuresimp)
-    featuresimp[, c("Var1", "Var2") := tstrsplit(Interaction, "|", fixed=TRUE)]
-    featuresimp[, ':='(Interaction  = NULL)]
-    featuresimp[, Gain.Percentage := Gain/sum(Gain)]
-    cols <- c('wFScore', 'Average.wFScore', 'Average.Gain', 'Expected.Gain', 'Gain.Percentage')
-    featuresimp[,(cols) := round(.SD,4), .SDcols=cols]
-    setcolorder(featuresimp, c("Var1", "Var2", "Gain.Percentage", colnames(featuresimp)[!colnames(featuresimp) %in% c("Var1", "Var2", "Gain.Percentage")]))
-    
-  }
-  
-  
-  tableVars3 <- function(){
-    featuresimp <- openxlsx::read.xlsx(paste0(xgbfi.loc, "/", "XgbFeatureInteractions.xlsx"), sheet = 3)
-    featuresimp <- as.data.table(featuresimp)
-    featuresimp[, c("Var1", "Var2", "Var3") := tstrsplit(Interaction, "|", fixed=TRUE)]
-    featuresimp[, ':='(Interaction  = NULL)]
-    featuresimp[, Gain.Percentage := Gain/sum(Gain)]
-    cols <- c('wFScore', 'Average.wFScore', 'Average.Gain', 'Expected.Gain', 'Gain.Percentage')
-    featuresimp[,(cols) := round(.SD,4), .SDcols=cols]
-    setcolorder(featuresimp, c("Var1", "Var2", "Var3", "Gain.Percentage", colnames(featuresimp)[!colnames(featuresimp) %in% c("Var1", "Var2", "Var3", "Gain.Percentage")]))
-  }
-  
-  
-  
-  output$tableVars1 <- DT::renderDataTable(
-    datatable(tableVars1(),
-              filter = 'top',
-              class = 'hover stripe',
-              options = list(pageLength = 100,
-                             lengthMenu = c(10, 50, 100, 200))
-    ) %>% formatStyle('Gain.Percentage',
-                      background = styleColorBar(range(tableVars1()$Gain.Percentage, na.rm = TRUE, finite = TRUE), 'lightgreen'),
-                      backgroundSize = '100% 90%',
-                      backgroundRepeat = 'no-repeat',
-                      backgroundPosition = 'center') %>%
-      formatPercentage(columns = c('Gain.Percentage'),
-                       digits = 4)
-    
-    
-    
-  )
-  
-  
-  output$tableVars2 <-DT::renderDataTable(
-    datatable(tableVars2(),
-              filter = 'top',
-              class = 'hover stripe',
-              options = list(pageLength = 100,
-                             lengthMenu = c(10, 50, 100, 200))
-    ) %>% formatStyle('Gain.Percentage',
-                      background = styleColorBar(range(tableVars2()$Gain.Percentage, na.rm = TRUE, finite = TRUE), 'lightgreen'),
-                      backgroundSize = '100% 90%',
-                      backgroundRepeat = 'no-repeat',
-                      backgroundPosition = 'center') %>%
-      formatPercentage(columns = c('Gain.Percentage'),
-                       digits = 4)
-    
-    
-    
-  )
-  
-  
-  output$tableVars3 <-DT::renderDataTable(
-    datatable(tableVars3(),
-              filter = 'top',
-              class = 'hover stripe',
-              options = list(pageLength = 100,
-                             lengthMenu = c(10, 50, 100, 200))
-    ) %>% formatStyle('Gain.Percentage',
-                      background = styleColorBar(range(tableVars3()$Gain.Percentage, na.rm = TRUE, finite = TRUE), 'lightgreen'),
-                      backgroundSize = '100% 90%',
-                      backgroundRepeat = 'no-repeat',
-                      backgroundPosition = 'center') %>%
-      formatPercentage(columns = c('Gain.Percentage'),
-                       digits = 4)
-    
-    
-    
-  )
-  
-  
-    }
+           server = function(input, output) {
+             
+             
+             
+             tableVars1 <- function(){
+               featuresimp <- openxlsx::read.xlsx(paste0(xgbfi.loc, "/", "XgbFeatureInteractions.xlsx"))
+               featuresimp <- as.data.table(featuresimp)
+               featuresimp[, Gain.Percentage := Gain/sum(Gain)]
+               cols <- c('wFScore', 'Average.wFScore', 'Average.Gain', 'Expected.Gain', 'Gain.Percentage')
+               featuresimp[,(cols) := round(.SD,4), .SDcols=cols]
+               setcolorder(featuresimp, c("Interaction", "Gain.Percentage", colnames(featuresimp)[!colnames(featuresimp) %in% c("Interaction", "Gain.Percentage")]))
+               
+             }
+             
+             
+             tableVars2 <- function(){
+               featuresimp <- openxlsx::read.xlsx(paste0(xgbfi.loc, "/", "XgbFeatureInteractions.xlsx"), sheet = 2)
+               featuresimp <- as.data.table(featuresimp)
+               featuresimp[, c("Var1", "Var2") := tstrsplit(Interaction, "|", fixed=TRUE)]
+               featuresimp[, ':='(Interaction  = NULL)]
+               featuresimp[, Gain.Percentage := Gain/sum(Gain)]
+               cols <- c('wFScore', 'Average.wFScore', 'Average.Gain', 'Expected.Gain', 'Gain.Percentage')
+               featuresimp[,(cols) := round(.SD,4), .SDcols=cols]
+               setcolorder(featuresimp, c("Var1", "Var2", "Gain.Percentage", colnames(featuresimp)[!colnames(featuresimp) %in% c("Var1", "Var2", "Gain.Percentage")]))
+               
+             }
+             
+             
+             tableVars3 <- function(){
+               featuresimp <- openxlsx::read.xlsx(paste0(xgbfi.loc, "/", "XgbFeatureInteractions.xlsx"), sheet = 3)
+               featuresimp <- as.data.table(featuresimp)
+               featuresimp[, c("Var1", "Var2", "Var3") := tstrsplit(Interaction, "|", fixed=TRUE)]
+               featuresimp[, ':='(Interaction  = NULL)]
+               featuresimp[, Gain.Percentage := Gain/sum(Gain)]
+               cols <- c('wFScore', 'Average.wFScore', 'Average.Gain', 'Expected.Gain', 'Gain.Percentage')
+               featuresimp[,(cols) := round(.SD,4), .SDcols=cols]
+               setcolorder(featuresimp, c("Var1", "Var2", "Var3", "Gain.Percentage", colnames(featuresimp)[!colnames(featuresimp) %in% c("Var1", "Var2", "Var3", "Gain.Percentage")]))
+             }
+             
+             
+             
+             output$tableVars1 <- DT::renderDataTable(
+               datatable(tableVars1(),
+                         filter = 'top',
+                         class = 'hover stripe',
+                         options = list(pageLength = 100,
+                                        lengthMenu = c(10, 50, 100, 200))
+               ) %>% formatStyle('Gain.Percentage',
+                                 background = styleColorBar(c(0, max(tableVars1()$Gain.Percentage)), 'lightgreen'),
+                                 backgroundSize = '100% 90%',
+                                 backgroundRepeat = 'no-repeat',
+                                 backgroundPosition = 'center') %>%
+                 formatPercentage(columns = c('Gain.Percentage'),
+                                  digits = 4)
+               
+               
+               
+             )
+             
+             
+             output$tableVars2 <-DT::renderDataTable(
+               datatable(tableVars2(),
+                         filter = 'top',
+                         class = 'hover stripe',
+                         options = list(pageLength = 100,
+                                        lengthMenu = c(10, 50, 100, 200))
+               ) %>% formatStyle('Gain.Percentage',
+                                 background = styleColorBar(c(0, max(tableVars2()$Gain.Percentage)), 'lightgreen'),
+                                 backgroundSize = '100% 90%',
+                                 backgroundRepeat = 'no-repeat',
+                                 backgroundPosition = 'center') %>%
+                 formatPercentage(columns = c('Gain.Percentage'),
+                                  digits = 4)
+               
+               
+               
+             )
+             
+             
+             output$tableVars3 <-DT::renderDataTable(
+               datatable(tableVars3(),
+                         filter = 'top',
+                         class = 'hover stripe',
+                         options = list(pageLength = 100,
+                                        lengthMenu = c(10, 50, 100, 200))
+               ) %>% formatStyle('Gain.Percentage',
+                                 background = styleColorBar(c(0, max(tableVars3()$Gain.Percentage)), 'lightgreen'),
+                                 backgroundSize = '100% 90%',
+                                 backgroundRepeat = 'no-repeat',
+                                 backgroundPosition = 'center') %>%
+                 formatPercentage(columns = c('Gain.Percentage'),
+                                  digits = 4)
+               
+               
+               
+             )
+             
+             
+           }
   )
 }
