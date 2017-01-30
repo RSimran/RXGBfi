@@ -106,6 +106,8 @@ server = function(input, output) {
     featuresimp <- openxlsx::read.xlsx(paste0(xgbfi.loc, "/", "XgbFeatureInteractions.xlsx"))
     featuresimp <- as.data.table(featuresimp)
     featuresimp[, Gain.Percentage := Gain/sum(Gain)]
+    cols <- c('wFScore', 'Average.wFScore', 'Average.Gain', 'Expected.Gain', 'Gain.Percentage')
+    featuresimp[,(cols) := round(.SD,4), .SDcols=cols]
     setcolorder(featuresimp, c("Interaction", "Gain.Percentage", colnames(featuresimp)[!colnames(featuresimp) %in% c("Interaction", "Gain.Percentage")]))
     
   }
@@ -117,6 +119,8 @@ server = function(input, output) {
     featuresimp[, c("Var1", "Var2") := tstrsplit(Interaction, "|", fixed=TRUE)]
     featuresimp[, ':='(Interaction  = NULL)]
     featuresimp[, Gain.Percentage := Gain/sum(Gain)]
+    cols <- c('wFScore', 'Average.wFScore', 'Average.Gain', 'Expected.Gain', 'Gain.Percentage')
+    featuresimp[,(cols) := round(.SD,4), .SDcols=cols]
     setcolorder(featuresimp, c("Var1", "Var2", "Gain.Percentage", colnames(featuresimp)[!colnames(featuresimp) %in% c("Var1", "Var2", "Gain.Percentage")]))
     
   }
@@ -128,6 +132,8 @@ server = function(input, output) {
     featuresimp[, c("Var1", "Var2", "Var3") := tstrsplit(Interaction, "|", fixed=TRUE)]
     featuresimp[, ':='(Interaction  = NULL)]
     featuresimp[, Gain.Percentage := Gain/sum(Gain)]
+    cols <- c('wFScore', 'Average.wFScore', 'Average.Gain', 'Expected.Gain', 'Gain.Percentage')
+    featuresimp[,(cols) := round(.SD,4), .SDcols=cols]
     setcolorder(featuresimp, c("Var1", "Var2", "Var3", "Gain.Percentage", colnames(featuresimp)[!colnames(featuresimp) %in% c("Var1", "Var2", "Var3", "Gain.Percentage")]))
   }
   
@@ -139,12 +145,12 @@ server = function(input, output) {
               class = 'hover stripe',
               options = list(pageLength = 100,
                              lengthMenu = c(10, 50, 100, 200))
-    ) %>% formatStyle('Gain',
-                      background = styleColorBar(range(tableVars1()$Gain, na.rm = TRUE, finite = TRUE), 'lightgreen'),
+    ) %>% formatStyle('Gain.Percentage',
+                      background = styleColorBar(range(tableVars1()$Gain.Percentage, na.rm = TRUE, finite = TRUE), 'lightgreen'),
                       backgroundSize = '100% 90%',
                       backgroundRepeat = 'no-repeat',
                       backgroundPosition = 'center') %>%
-      formatPercentage(columns = c('wFScore', 'Average.wFScore', 'Average.Gain', 'Expected.Gain', 'Gain.Percentage'),
+      formatPercentage(columns = c('Gain.Percentage'),
                        digits = 4)
     
     
@@ -152,19 +158,20 @@ server = function(input, output) {
   )
   
   
-  output$tableVars2 <- DT::renderDataTable(
+  output$tableVars2 <-DT::renderDataTable(
     datatable(tableVars2(),
               filter = 'top',
               class = 'hover stripe',
               options = list(pageLength = 100,
                              lengthMenu = c(10, 50, 100, 200))
-    ) %>% formatStyle('Gain',
-                      background = styleColorBar(range(tableVars2()$Gain, na.rm = TRUE, finite = TRUE), 'lightgreen'),
+    ) %>% formatStyle('Gain.Percentage',
+                      background = styleColorBar(range(tableVars2()$Gain.Percentage, na.rm = TRUE, finite = TRUE), 'lightgreen'),
                       backgroundSize = '100% 90%',
                       backgroundRepeat = 'no-repeat',
                       backgroundPosition = 'center') %>%
-      formatPercentage(columns = c('wFScore', 'Average.wFScore', 'Average.Gain', 'Expected.Gain', 'Gain.Percentage'),
+      formatPercentage(columns = c('Gain.Percentage'),
                        digits = 4)
+    
     
     
   )
@@ -176,12 +183,12 @@ server = function(input, output) {
               class = 'hover stripe',
               options = list(pageLength = 100,
                              lengthMenu = c(10, 50, 100, 200))
-    ) %>% formatStyle('Gain',
-                      background = styleColorBar(range(tableVars3()$Gain, na.rm = TRUE, finite = TRUE), 'lightgreen'),
+    ) %>% formatStyle('Gain.Percentage',
+                      background = styleColorBar(range(tableVars3()$Gain.Percentage, na.rm = TRUE, finite = TRUE), 'lightgreen'),
                       backgroundSize = '100% 90%',
                       backgroundRepeat = 'no-repeat',
                       backgroundPosition = 'center') %>%
-      formatPercentage(columns = c('wFScore', 'Average.wFScore', 'Average.Gain', 'Expected.Gain', 'Gain.Percentage'),
+      formatPercentage(columns = c('Gain.Percentage'),
                        digits = 4)
     
     
