@@ -33,3 +33,7 @@ features <- names(Icecream[,-1])
 
 xgb.fi(model = bst, features = features)
 ```
+
+# Screenshot
+![Alt text](https://raw.githubusercontent.com/RSimran/RXGBfi/master/RXGBfi.PNG)
+
