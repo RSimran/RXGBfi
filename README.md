@@ -35,5 +35,5 @@ xgb.fi(model = bst, features = features)
 ```
 
 # Screenshot
-![Alt text](https://raw.githubusercontent.com/RSimran/RXGBfi/master/RXGBfi.PNG)
+![Alt text](https://github.com/RSimran/RXGBfi/blob/master/RXGBfi.PNG?raw=true)
 
